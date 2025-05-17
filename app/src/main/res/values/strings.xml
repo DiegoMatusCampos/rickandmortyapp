@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Rick And Morty</string>
+    <string name="gender">Género</string>
+    <string name="origen">Origen</string>
+    <string name="last_location">Última ubicación</string>
+    <string name="episodes_button">Episodios</string>
+</resources>
