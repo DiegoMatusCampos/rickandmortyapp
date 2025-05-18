@@ -29,7 +29,7 @@ class CharacterRepositoryImpl @Inject constructor(
     private val api: ApiService,
     private val database: CharacterDatabase
 ) : CharacterRepository {
-    override suspend fun getAllCharacters(): Flow<PagingData<Character>>{
+    override fun getAllCharacters(): Flow<PagingData<Character>>{
         val pagingSourceFactory = { database.characterDao().getAllCharacters()}
 
         return Pager(

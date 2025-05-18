@@ -29,9 +29,12 @@ class CharacterRemoteMediator @Inject constructor(
               LoadType.PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
               LoadType.APPEND -> {
                   val lastItem = state.lastItemOrNull()
-                  lastItem?.id ?: return MediatorResult.Success(endOfPaginationReached = true)
+                  if (lastItem == null) return MediatorResult.Success(true)
+                  (lastItem.id / state.config.pageSize) + 1
               }
           }
+
+
           val response = apiService.getCharacters(page)
           database.withTransaction {
               if(loadType == LoadType.REFRESH){

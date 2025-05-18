@@ -36,6 +36,11 @@ import coil.request.ImageRequest
 import com.example.rickandmorty.R
 import com.example.rickandmorty.presentation.character_detail.components.SectionInformation
 import com.example.rickandmorty.presentation.character_list.CharacterUiState
+import com.example.rickandmorty.ui.theme.AliveGreen
+import com.example.rickandmorty.ui.theme.DarkBackground
+import com.example.rickandmorty.ui.theme.NeonGreen
+import com.example.rickandmorty.ui.theme.RedDead
+import com.example.rickandmorty.ui.theme.UnknownGrey
 import java.nio.file.WatchEvent
 
 @Composable
@@ -44,7 +49,8 @@ fun DetailCharacterScreen(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier.then(
+        modifier = modifier.padding(top= 16.dp)
+            .then(
             Modifier
                 .fillMaxSize()
                 .padding(horizontal = 16.dp)
@@ -52,53 +58,11 @@ fun DetailCharacterScreen(
         )
     ) {
 
-        val colorBadge = when(uiState.selectedCharacter?.status){
-                "Dead" -> Color.Red
-                "Alive" -> Color.Green
-            else -> Color.Yellow
+        val colorBadge = when (uiState.selectedCharacter?.status) {
+            "Dead" -> RedDead
+            "Alive" -> AliveGreen
+            else -> UnknownGrey
         }
-
-        Column {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text = uiState.selectedCharacter?.name?:"",
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier
-                        .padding(start = 16.dp)
-                        .weight(1f)
-                )
-
-                Text(
-                    text = uiState.selectedCharacter?.specie?:"",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight =  FontWeight.Light,
-                    modifier = Modifier
-                        .background(Color.LightGray, RoundedCornerShape(64.dp))
-                        .padding(horizontal = 16.dp)
-
-
-                )
-                Spacer(Modifier.width(8.dp))
-
-                Text(
-                    text = uiState.selectedCharacter?.status?:"",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Light,
-                    modifier = Modifier
-                        .background(colorBadge, RoundedCornerShape(64.dp))
-                        .padding(horizontal = 16.dp)
-                )
-
-
-            }
-
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(uiState.selectedCharacter?.image)
@@ -107,29 +71,70 @@ fun DetailCharacterScreen(
             contentDescription = uiState.selectedCharacter?.name,
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(1f,true)
+                .aspectRatio(1f, true)
                 .clip(RoundedCornerShape(32.dp))
         )
 
         Spacer(modifier = Modifier.height(32.dp))
 
+        Text(
+            text = uiState.selectedCharacter?.name ?: "",
+            style = MaterialTheme.typography.displayLarge,
+            fontWeight = FontWeight.Bold,
+            color = NeonGreen,
+            modifier = Modifier
+                .padding(start = 16.dp)
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = uiState.selectedCharacter?.specie ?: "",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Light,
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(64.dp))
+                    .padding(horizontal = 16.dp)
+
+
+            )
+            Spacer(Modifier.width(8.dp))
+
+            Text(
+                text = uiState.selectedCharacter?.status ?: "",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Light,
+                color = DarkBackground,
+                modifier = Modifier
+                    .background(colorBadge, RoundedCornerShape(64.dp))
+                    .padding(horizontal = 16.dp)
+            )
+
+
+        }
+
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+
         SectionInformation(
             title = stringResource(R.string.gender),
-            value = uiState.selectedCharacter?.gender?: ""
+            value = uiState.selectedCharacter?.gender ?: ""
         )
 
         Spacer(modifier = Modifier.height(32.dp))
 
         SectionInformation(
             title = stringResource(R.string.origen),
-            value = uiState.selectedCharacter?.origin?: ""
+            value = uiState.selectedCharacter?.origin ?: ""
         )
 
         Spacer(modifier = Modifier.height(32.dp))
 
         SectionInformation(
             title = stringResource(R.string.last_location),
-            value = uiState.selectedCharacter?.lastLocation?: ""
+            value = uiState.selectedCharacter?.lastLocation ?: ""
         )
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -141,7 +146,7 @@ fun DetailCharacterScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(60.dp)
-                .padding(horizontal = 64.dp)
+                .padding(horizontal = 32.dp)
         ) {
             Text(
                 text = stringResource(R.string.episodes_button),

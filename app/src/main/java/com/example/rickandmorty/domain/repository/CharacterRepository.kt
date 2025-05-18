@@ -8,6 +8,6 @@ import kotlinx.coroutines.flow.Flow
 
 
 interface CharacterRepository {
-    suspend fun getAllCharacters(): Flow<PagingData<Character>>
+   fun getAllCharacters(): Flow<PagingData<Character>>
     suspend fun getCharacters(id: Int): Result<Character, NetworkError>
 }

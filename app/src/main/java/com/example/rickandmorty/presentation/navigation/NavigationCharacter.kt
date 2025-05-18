@@ -23,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.rickandmorty.R
 import com.example.rickandmorty.presentation.character_detail.DetailCharacterScreen
 import com.example.rickandmorty.presentation.character_list.CharacterListAction
@@ -42,6 +43,7 @@ fun NavigationCharacter(
 
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val  characters = viewModel.characters.collectAsLazyPagingItems()
 
     ObserverAsEvents(events = viewModel.events) { event ->
         when(event){
@@ -74,6 +76,7 @@ fun NavigationCharacter(
             composable<CharacterList> {
                 ListCharacterScreen(
                     uiState = uiState,
+                    items = characters,
                     onAction = { action ->
                         viewModel.onAction(action)
                         when(action){

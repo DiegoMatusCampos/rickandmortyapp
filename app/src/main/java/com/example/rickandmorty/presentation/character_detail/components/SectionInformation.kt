@@ -33,8 +33,9 @@ fun SectionInformation(
     ) {
         Text(
             text = title,
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Medium,
+            style = MaterialTheme.typography.titleMedium.copy(
+                fontWeight = FontWeight.Bold
+            )
         )
 
         Spacer(Modifier.height(8.dp))
@@ -42,8 +43,9 @@ fun SectionInformation(
 
         Text(
             text = value,
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight =  FontWeight.Light,
+            style = MaterialTheme.typography.titleMedium.copy(
+                fontWeight = FontWeight.Light
+            ),
 
         )
     }

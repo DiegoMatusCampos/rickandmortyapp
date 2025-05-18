@@ -2,6 +2,7 @@ package com.example.rickandmorty.presentation.character_list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.example.rickandmorty.domain.model.Character
 import com.example.rickandmorty.domain.repository.CharacterRepository
 import com.example.rickandmorty.domain.util.onError
@@ -36,6 +37,8 @@ class CharacterViewModel @Inject constructor(
             initialValue = CharacterUiState()
         )
 
+    val characters = repository.getAllCharacters().cachedIn(viewModelScope)
+
 
     private val _events = Channel<CharacterListEvents>()
     val events = _events.receiveAsFlow()
@@ -65,9 +68,6 @@ class CharacterViewModel @Inject constructor(
                 it.copy(
                     isLoading = true
                 )
-            }
-            repository.getAllCharacters().
-                _events.send(CharacterListEvents.Error(error))
             }
         }
     }
