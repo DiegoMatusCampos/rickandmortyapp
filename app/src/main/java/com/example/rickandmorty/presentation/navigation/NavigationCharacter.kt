@@ -54,12 +54,8 @@ fun NavigationCharacter(
 
     }
 
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
-
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     Scaffold(
-
         topBar = {
             TopAppBar(
                 onBack = {
@@ -69,7 +65,6 @@ fun NavigationCharacter(
                 canNavigateBack = navController.previousBackStackEntry != null
             )
         },
-
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
     ) {innerPadding ->
         NavHost(navController = navController, startDestination = CharacterList) {

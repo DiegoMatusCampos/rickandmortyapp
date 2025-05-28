@@ -66,7 +66,6 @@ fun ListCharacterScreen(
                         )
                     }
 
-
                 }
 
                 when (val appendState = items.loadState.append) {
