@@ -16,144 +16,175 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
+import coil3.compose.SubcomposeAsyncImage
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import com.example.rickandmorty.R
 import com.example.rickandmorty.presentation.character_detail.components.SectionInformation
-import com.example.rickandmorty.presentation.character_list.CharacterUiState
+import com.example.rickandmorty.presentation.navigation.TopAppBar
 import com.example.rickandmorty.ui.theme.AliveGreen
 import com.example.rickandmorty.ui.theme.DarkBackground
 import com.example.rickandmorty.ui.theme.NeonGreen
 import com.example.rickandmorty.ui.theme.RedDead
 import com.example.rickandmorty.ui.theme.UnknownGrey
-import java.nio.file.WatchEvent
 
+@ExperimentalMaterial3Api
 @Composable
 fun DetailCharacterScreen(
-    uiState: CharacterUiState,
+    onAction: (DetailCharacterListAction) -> Unit,
+    uiState: DetailCharacterUiState,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier.padding(top= 16.dp)
-            .then(
-            Modifier
-                .fillMaxSize()
-                .padding(horizontal = 16.dp)
-                .verticalScroll(rememberScrollState())
-        )
-    ) {
 
-        val colorBadge = when (uiState.selectedCharacter?.status) {
-            "Dead" -> RedDead
-            "Alive" -> AliveGreen
-            else -> UnknownGrey
-        }
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(uiState.selectedCharacter?.image)
-                .crossfade(true)
-                .build(),
-            contentDescription = uiState.selectedCharacter?.name,
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(1f, true)
-                .clip(RoundedCornerShape(32.dp))
-        )
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
-        Spacer(modifier = Modifier.height(32.dp))
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = stringResource(R.string.detail),
+                onBack = {
+                   onAction(DetailCharacterListAction.onNavigateUp)
+                },
+                canNavigateUp = true,
+                scrollBehavior = scrollBehavior,
+            )
+        },
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+    ) { innerPadding ->
 
-        Text(
-            text = uiState.selectedCharacter?.name ?: "",
-            style = MaterialTheme.typography.displayLarge,
-            fontWeight = FontWeight.Bold,
-            color = NeonGreen,
-            modifier = Modifier
-                .padding(start = 16.dp)
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
+
+        Column(
+            modifier = modifier.padding(top = 16.dp)
+                .then(
+                    Modifier
+                        .padding(innerPadding)
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp)
+                        .verticalScroll(rememberScrollState())
+                )
         ) {
-            Text(
-                text = uiState.selectedCharacter?.specie ?: "",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Light,
+
+            val colorBadge = when (uiState.selectedCharacter?.status) {
+                "Dead" -> RedDead
+                "Alive" -> AliveGreen
+                else -> UnknownGrey
+            }
+            SubcomposeAsyncImage (
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(uiState.selectedCharacter?.image)
+                    .crossfade(true)
+                    .build(),
+                loading = {
+                    CircularProgressIndicator()
+                },
+                contentDescription = uiState.selectedCharacter?.name,
                 modifier = Modifier
-                    .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(64.dp))
-                    .padding(horizontal = 16.dp)
-
-
+                    .fillMaxWidth()
+                    .aspectRatio(1f, true)
+                    .clip(RoundedCornerShape(32.dp))
             )
-            Spacer(Modifier.width(8.dp))
+
+            Spacer(modifier = Modifier.height(32.dp))
 
             Text(
-                text = uiState.selectedCharacter?.status ?: "",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Light,
-                color = DarkBackground,
+                text = uiState.selectedCharacter?.name ?: "",
+                style = MaterialTheme.typography.displayLarge,
+                fontWeight = FontWeight.Bold,
+                color = NeonGreen,
                 modifier = Modifier
-                    .background(colorBadge, RoundedCornerShape(64.dp))
-                    .padding(horizontal = 16.dp)
+                    .padding(start = 16.dp)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = uiState.selectedCharacter?.specie ?: "",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Light,
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(64.dp))
+                        .padding(horizontal = 16.dp)
+
+
+                )
+                Spacer(Modifier.width(8.dp))
+
+                Text(
+                    text = uiState.selectedCharacter?.status ?: "",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Light,
+                    color = DarkBackground,
+                    modifier = Modifier
+                        .background(colorBadge, RoundedCornerShape(64.dp))
+                        .padding(horizontal = 16.dp)
+                )
+
+
+            }
+
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+
+            SectionInformation(
+                title = stringResource(R.string.gender),
+                value = uiState.selectedCharacter?.gender ?: ""
             )
 
+            Spacer(modifier = Modifier.height(32.dp))
+
+            SectionInformation(
+                title = stringResource(R.string.origen),
+                value = uiState.selectedCharacter?.origin ?: ""
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            SectionInformation(
+                title = stringResource(R.string.last_location),
+                value = uiState.selectedCharacter?.lastLocation ?: ""
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            Button(
+                onClick = {
+
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(60.dp)
+                    .padding(horizontal = 32.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.episodes_button),
+                    fontSize = 18.sp
+                )
+            }
+            Spacer(modifier = Modifier.height(32.dp))
 
         }
-
-
-        Spacer(modifier = Modifier.height(32.dp))
-
-
-        SectionInformation(
-            title = stringResource(R.string.gender),
-            value = uiState.selectedCharacter?.gender ?: ""
-        )
-
-        Spacer(modifier = Modifier.height(32.dp))
-
-        SectionInformation(
-            title = stringResource(R.string.origen),
-            value = uiState.selectedCharacter?.origin ?: ""
-        )
-
-        Spacer(modifier = Modifier.height(32.dp))
-
-        SectionInformation(
-            title = stringResource(R.string.last_location),
-            value = uiState.selectedCharacter?.lastLocation ?: ""
-        )
-
-        Spacer(modifier = Modifier.height(32.dp))
-
-        Button(
-            onClick = {
-
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(60.dp)
-                .padding(horizontal = 32.dp)
-        ) {
-            Text(
-                text = stringResource(R.string.episodes_button),
-                fontSize = 18.sp
-            )
-        }
-        Spacer(modifier = Modifier.height(32.dp))
-
     }
 }

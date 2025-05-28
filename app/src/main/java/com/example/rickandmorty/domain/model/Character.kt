@@ -1,6 +1,10 @@
 package com.example.rickandmorty.domain.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Character(
+    val id: Int,
     val name: String,
     val specie: String,
     val status: String,

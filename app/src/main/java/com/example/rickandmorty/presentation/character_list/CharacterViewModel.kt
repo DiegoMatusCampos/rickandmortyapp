@@ -7,6 +7,9 @@ import com.example.rickandmorty.domain.model.Character
 import com.example.rickandmorty.domain.repository.CharacterRepository
 import com.example.rickandmorty.domain.util.onError
 import com.example.rickandmorty.domain.util.onSucces
+import com.example.rickandmorty.presentation.util.SnackbarAction
+import com.example.rickandmorty.presentation.util.SnackbarController
+import com.example.rickandmorty.presentation.util.SnackbarEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import jakarta.inject.Inject
@@ -43,19 +46,12 @@ class CharacterViewModel @Inject constructor(
     private val _events = Channel<CharacterListEvents>()
     val events = _events.receiveAsFlow()
 
-
-    fun onAction(action: CharacterListAction) {
-        when (action) {
-            is CharacterListAction.onClickListItem -> {
-                selectedCharacterItem(action.character)
-            }
-        }
-    }
-
-    private fun selectedCharacterItem(character: Character) {
-        _uiState.update {
-            it.copy(
-                selectedCharacter = character
+    fun onShowSnackbar(message: String) {
+        viewModelScope.launch {
+            SnackbarController.sendEvent(
+                event = SnackbarEvent(
+                    message = message
+                )
             )
         }
     }

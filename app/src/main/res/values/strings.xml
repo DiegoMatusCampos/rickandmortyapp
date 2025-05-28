@@ -6,4 +6,6 @@
     <string name="episodes_button">Episodios</string>
     <string name="specie">Especie:</string>
     <string name="status">Estatus:</string>
+    <string name="characters">Personajes</string>
+    <string name="detail">Detalle</string>
 </resources>

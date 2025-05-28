@@ -1,4 +1,6 @@
 package com.example.rickandmorty.presentation.navigation
+import com.example.rickandmorty.domain.model.Character
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 
@@ -6,4 +8,4 @@ import kotlinx.serialization.Serializable
 object CharacterList
 
 @Serializable
-object CharacterDetail
+data class CharacterDetail(val characterId: Int)

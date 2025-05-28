@@ -5,6 +5,7 @@ import com.example.rickandmorty.data.dto.ResultDto
 import com.example.rickandmorty.domain.model.Character
 
 fun ResultDto.toCharacter() = Character(
+    id = this.id,
     name = this.name,
     specie = this.species,
     status = this.status,
@@ -28,6 +29,7 @@ fun ResultDto.toCharacterEntity() = CharacterEntity(
 )
 
 fun CharacterEntity.toCharacter() = Character(
+    id = this.id,
     name = this.name,
     specie = this.specie,
     status = this.status,

@@ -10,6 +10,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,21 +19,24 @@ import com.example.rickandmorty.R
 
 @Composable
 fun TopAppBar(
+    title: String,
     onBack: () -> Unit,
-    canNavigateBack: Boolean,
     scrollBehavior: TopAppBarScrollBehavior,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    canNavigateUp: Boolean = false
 
 ) {
-    CenterAlignedTopAppBar(
+
+    TopAppBar(
         title = {
             Text(
-                text = stringResource(R.string.app_name)
+                text = title
             )
         },
         scrollBehavior = scrollBehavior,
         navigationIcon = {
-            if (canNavigateBack) {
+
+            if (canNavigateUp) {
                 IconButton(onClick = onBack) {
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
@@ -40,7 +44,7 @@ fun TopAppBar(
                     )
                 }
             }
-        })
-
+        }
+    )
 
 }

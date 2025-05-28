@@ -42,6 +42,10 @@ class CharacterRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCharacters(id: Int): Result<Character, NetworkError> {
-        TODO()
+        return safeCall {
+                api.getCharacter(id)
+        }.map { result ->
+            result.toCharacter()
+        }
     }
 }

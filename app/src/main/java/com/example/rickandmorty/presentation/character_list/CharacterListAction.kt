@@ -4,4 +4,6 @@ import com.example.rickandmorty.domain.model.Character
 
 sealed interface CharacterListAction {
     data class onClickListItem(val character: Character) : CharacterListAction
+    data object onNavigateUp : CharacterListAction
+    data class onShowSnackbarClick( val message: String) : CharacterListAction
 }

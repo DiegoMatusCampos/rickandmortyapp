@@ -11,6 +11,10 @@ import com.example.rickandmorty.data.database.CharacterDao
 import com.example.rickandmorty.data.database.CharacterDatabase
 import com.example.rickandmorty.data.database.CharacterEntity
 import com.example.rickandmorty.data.mappers.toCharacterEntity
+import com.example.rickandmorty.domain.util.NetworkError
+import com.example.rickandmorty.domain.util.Result
+import kotlinx.serialization.SerializationException
+import java.nio.channels.UnresolvedAddressException
 import javax.inject.Inject
 
 
@@ -44,8 +48,15 @@ class CharacterRemoteMediator @Inject constructor(
           }
 
           MediatorResult.Success(endOfPaginationReached = response.body()?.results?.isEmpty() ?: true)
-      } catch (exception: Exception) {
-          MediatorResult.Error(exception)
+      } catch (e: UnresolvedAddressException){
+          e.printStackTrace()
+          return MediatorResult.Error(e)
+      }catch (e: SerializationException){
+          e.printStackTrace()
+          return  return MediatorResult.Error(e)
+      }catch (e: Exception){
+          e.printStackTrace()
+          return return MediatorResult.Error(e)
       }
 
     }
