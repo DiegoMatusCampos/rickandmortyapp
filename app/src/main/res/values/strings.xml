@@ -8,4 +8,7 @@
     <string name="status">Estatus:</string>
     <string name="characters">Personajes</string>
     <string name="detail">Detalle</string>
+    <string name="network_error">No hay conexión a internet</string>
+    <string name="retry_button">Reintentar</string>
 </resources>
+

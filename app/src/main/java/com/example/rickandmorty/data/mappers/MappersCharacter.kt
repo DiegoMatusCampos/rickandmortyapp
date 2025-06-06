@@ -1,8 +1,13 @@
 package com.example.rickandmorty.data.mappers
 
-import com.example.rickandmorty.data.database.CharacterEntity
+import com.example.rickandmorty.data.database.character.CharacterEntity
 import com.example.rickandmorty.data.dto.ResultDto
 import com.example.rickandmorty.domain.model.Character
+
+
+private fun String.toEpisodeId(): Int =
+    substringAfterLast('/').toInt()
+
 
 fun ResultDto.toCharacter() = Character(
     id = this.id,
@@ -13,7 +18,7 @@ fun ResultDto.toCharacter() = Character(
     gender = this.gender,
     origin = this.origin.name,
     lastLocation = this.location.name,
-    episodes = this.episode.map { it.last().toInt() },
+    episodes = this.episode.map { it.toEpisodeId() },
 )
 
 fun ResultDto.toCharacterEntity() = CharacterEntity(
@@ -25,7 +30,7 @@ fun ResultDto.toCharacterEntity() = CharacterEntity(
     gender = this.gender,
     origin = this.origin.name,
     lastLocation = this.location.name,
-    episodes = this.episode.map { it.last().toInt() }
+    episodes = this.episode.map { it.toEpisodeId() }
 )
 
 fun CharacterEntity.toCharacter() = Character(

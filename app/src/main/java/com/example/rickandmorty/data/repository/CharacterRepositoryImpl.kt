@@ -8,13 +8,10 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.example.rickandmorty.domain.util.Result
-import com.example.rickandmorty.data.database.CharacterDao
-import com.example.rickandmorty.data.database.CharacterDatabase
-import com.example.rickandmorty.data.database.CharacterEntity
+import com.example.rickandmorty.data.database.RickAndMortyDatabase
 import com.example.rickandmorty.data.mappers.toCharacter
-import com.example.rickandmorty.data.mappers.toCharacterEntity
 import com.example.rickandmorty.data.network.ApiService
-import com.example.rickandmorty.data.network.CharacterRemoteMediator
+import com.example.rickandmorty.data.paging.CharacterRemoteMediator
 import com.example.rickandmorty.data.network.safeCall
 import com.example.rickandmorty.domain.model.Character
 import com.example.rickandmorty.domain.repository.CharacterRepository
@@ -27,7 +24,7 @@ import kotlinx.coroutines.flow.map
 
 class CharacterRepositoryImpl @Inject constructor(
     private val api: ApiService,
-    private val database: CharacterDatabase
+    private val database: RickAndMortyDatabase
 ) : CharacterRepository {
     override fun getAllCharacters(): Flow<PagingData<Character>>{
         val pagingSourceFactory = { database.characterDao().getAllCharacters()}
@@ -42,10 +39,19 @@ class CharacterRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCharacters(id: Int): Result<Character, NetworkError> {
-        return safeCall {
-                api.getCharacter(id)
-        }.map { result ->
-            result.toCharacter()
-        }
+
+        val character = database.characterDao().getCharacterById(id)
+
+         val result = if(character != null){
+            Result.Success( character.toCharacter())
+        } else {
+             safeCall {
+                 api.getCharacter(id)
+             }.map { result ->
+                 result.toCharacter()
+             }
+         }
+
+        return result as Result<Character, NetworkError>
     }
 }

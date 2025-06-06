@@ -3,8 +3,8 @@ package com.example.rickandmorty.di
 import android.content.Context
 import androidx.room.Room
 import com.example.rickandmorty.BuildConfig
-import com.example.rickandmorty.data.database.CharacterDao
-import com.example.rickandmorty.data.database.CharacterDatabase
+import com.example.rickandmorty.data.database.character.CharacterDao
+import com.example.rickandmorty.data.database.RickAndMortyDatabase
 import com.example.rickandmorty.data.network.ApiService
 import dagger.Module
 import dagger.Provides
@@ -22,10 +22,10 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideRoomDatabase(@ApplicationContext context: Context): CharacterDatabase{
+    fun provideRoomDatabase(@ApplicationContext context: Context): RickAndMortyDatabase{
         return Room.databaseBuilder(
             context = context,
-            klass = CharacterDatabase::class.java,
+            klass = RickAndMortyDatabase::class.java,
             name = "rickandmorty.db"
         ).build()
     }
@@ -45,6 +45,6 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideCharacterDao(db: CharacterDatabase): CharacterDao =  db.characterDao()
+    fun provideCharacterDao(db: RickAndMortyDatabase): CharacterDao =  db.characterDao()
 
 }
