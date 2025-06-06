@@ -3,11 +3,7 @@ package com.example.rickandmorty.presentation.character_list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
-import com.example.rickandmorty.domain.model.Character
 import com.example.rickandmorty.domain.repository.CharacterRepository
-import com.example.rickandmorty.domain.util.onError
-import com.example.rickandmorty.domain.util.onSucces
-import com.example.rickandmorty.presentation.util.SnackbarAction
 import com.example.rickandmorty.presentation.util.SnackbarController
 import com.example.rickandmorty.presentation.util.SnackbarEvent
 import dagger.hilt.android.lifecycle.HiltViewModel

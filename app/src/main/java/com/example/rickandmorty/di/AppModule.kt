@@ -27,7 +27,8 @@ object AppModule {
             context = context,
             klass = RickAndMortyDatabase::class.java,
             name = "rickandmorty.db"
-        ).build()
+        ).fallbackToDestructiveMigration()
+            .build()
     }
 
     @Provides

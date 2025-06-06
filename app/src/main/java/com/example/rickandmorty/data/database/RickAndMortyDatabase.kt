@@ -13,7 +13,7 @@ import com.example.rickandmorty.data.database.episode.EpisodeEntity
         CharacterEntity::class,
         EpisodeEntity::class
     ],
-    version = 1
+    version = 2
 )
 @TypeConverters(Converters::class)
 abstract class RickAndMortyDatabase : RoomDatabase() {

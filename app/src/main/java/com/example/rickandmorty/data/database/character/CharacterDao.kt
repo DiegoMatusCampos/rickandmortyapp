@@ -22,6 +22,6 @@ interface CharacterDao {
     @Query("DELETE FROM characterentity")
     fun deleteAllCharacters()
 
-    @Query("SELECT COUNT(*) characterentity")
+    @Query("SELECT COUNT(*) FROM characterentity")
     suspend fun count(): Int
 }

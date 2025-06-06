@@ -3,7 +3,7 @@ package com.example.rickandmorty.data.dto
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ResponseDto(
+data class  ResponseDto<T>(
     val info: InfoDto,
-    val results: List<ResultDto>
+    val results: List<T>
 )
