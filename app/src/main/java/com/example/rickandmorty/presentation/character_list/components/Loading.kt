@@ -16,7 +16,7 @@ fun LoadingScreen(modifier: Modifier = Modifier) {
         modifier = Modifier.fillMaxSize()
     ) {
         CircularProgressIndicator(
-            modifier = Modifier.size(50.dp)
+            modifier = Modifier.size(80.dp)
         )
     }
 }

@@ -9,3 +9,6 @@ object CharacterList
 
 @Serializable
 data class CharacterDetail(val characterId: Int)
+
+@Serializable
+data class EpisodeList(val episodesIds: List<Int>)

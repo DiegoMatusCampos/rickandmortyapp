@@ -5,6 +5,7 @@ import com.example.rickandmorty.data.database.episode.EpisodeEntity
 import com.example.rickandmorty.data.dto.ResultDto
 import com.example.rickandmorty.data.dto.ResultEpisodeDto
 import com.example.rickandmorty.domain.model.Character
+import com.example.rickandmorty.domain.model.Episode
 
 
 private fun String.toEpisodeId(): Int =
@@ -64,6 +65,18 @@ fun ResultEpisodeDto.toEpisodeEntity(): EpisodeEntity {
     val (seasonNumber, episodeNumber) = parseEpisodeCode(this.episode)!!
 
     return EpisodeEntity(
+        id = this.id,
+        name = this.name,
+        airDate = this.airDate,
+        episodeNumber = episodeNumber,
+        seasonNumber = seasonNumber
+    )
+}
+
+fun ResultEpisodeDto.toEpisode(): Episode {
+    val (seasonNumber, episodeNumber) = parseEpisodeCode(this.episode)!!
+
+    return Episode(
         id = this.id,
         name = this.name,
         airDate = this.airDate,

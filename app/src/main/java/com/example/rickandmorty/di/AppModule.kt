@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.example.rickandmorty.BuildConfig
 import com.example.rickandmorty.data.database.character.CharacterDao
 import com.example.rickandmorty.data.database.RickAndMortyDatabase
+import com.example.rickandmorty.data.database.episode.EpisodeDao
 import com.example.rickandmorty.data.network.ApiService
 import dagger.Module
 import dagger.Provides
@@ -47,5 +48,9 @@ object AppModule {
     @Provides
     @Singleton
     fun provideCharacterDao(db: RickAndMortyDatabase): CharacterDao =  db.characterDao()
+
+    @Provides
+    @Singleton
+    fun provideEpisodeDao(db: RickAndMortyDatabase): EpisodeDao =  db.episodeDao()
 
 }

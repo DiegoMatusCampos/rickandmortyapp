@@ -22,8 +22,13 @@ interface ApiService {
         @Path("id") id: Int
     ) : Response<ResultDto>
 
-    @GET("api/episodes/{ids}")
+    @GET("api/episode/{ids}")
     suspend fun getEpisodes(
         @Path("ids") ids : String,
-    ): Response<ResponseDto<ResultEpisodeDto>>
+    ): Response<List<ResultEpisodeDto>>
+
+    @GET("api/episode/{id}")
+    suspend fun getEpisode(
+        @Path("id") id : String,
+    ): Response<ResultEpisodeDto>
 }

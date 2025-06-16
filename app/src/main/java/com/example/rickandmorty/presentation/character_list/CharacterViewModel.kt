@@ -2,6 +2,7 @@ package com.example.rickandmorty.presentation.character_list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.rickandmorty.domain.repository.CharacterRepository
 import com.example.rickandmorty.presentation.util.SnackbarController
@@ -13,6 +14,7 @@ import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
@@ -26,43 +28,11 @@ class CharacterViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    private val _uiState = MutableStateFlow(CharacterUiState())
-    val uiState: StateFlow<CharacterUiState> = _uiState.onStart {
-        loadingCharacters()
-    }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000L),
-            initialValue = CharacterUiState()
-        )
-
-    val characters = repository.getAllCharacters().cachedIn(viewModelScope)
-
-
-    private val _events = Channel<CharacterListEvents>()
-    val events = _events.receiveAsFlow()
-
-    fun onShowSnackbar(message: String) {
-        viewModelScope.launch {
-            SnackbarController.sendEvent(
-                event = SnackbarEvent(
-                    message = message
-                )
-            )
+    val characters = repository.getAllCharacters()
+        .catch {
+            emit(PagingData.empty())
         }
-    }
-
-
-    private fun loadingCharacters() {
-        viewModelScope.launch {
-
-            _uiState.update {
-                it.copy(
-                    isLoading = true
-                )
-            }
-        }
-    }
+        .cachedIn(viewModelScope)
 
 
 }

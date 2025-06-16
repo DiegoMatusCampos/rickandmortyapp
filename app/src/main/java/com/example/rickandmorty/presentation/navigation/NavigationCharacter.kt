@@ -12,6 +12,7 @@ import com.example.rickandmorty.domain.model.Character
 import com.example.rickandmorty.presentation.character_detail.DetailCharacterRootScreen
 
 import com.example.rickandmorty.presentation.character_list.ListCharacterRootScreen
+import com.example.rickandmorty.presentation.episode_list.EpisodeListScreenRoot
 import kotlin.reflect.typeOf
 
 
@@ -36,6 +37,17 @@ fun NavigationCharacter(
 
         composable<CharacterDetail>() {
             DetailCharacterRootScreen(
+                onNavigateUp = {
+                    navController.navigateUp()
+                },
+                onClickButton = { episodeIds ->
+                    navController.navigate(EpisodeList(episodesIds = episodeIds))
+                }
+            )
+        }
+
+        composable<EpisodeList>{
+            EpisodeListScreenRoot(
                 onNavigateUp = {
                     navController.navigateUp()
                 }

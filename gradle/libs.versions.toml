@@ -1,6 +1,7 @@
 [versions]
 agp = "8.9.3"
 coilNetworkOkhttp = "3.2.0"
+coreTesting = "2.2.0"
 kotlin = "2.1.20"
 coreKtx = "1.16.0"
 junit = "4.13.2"
@@ -11,6 +12,7 @@ lifecycleRuntimeKtx = "2.9.0"
 activityCompose = "1.10.1"
 composeBom = "2025.05.01"
 navigationCompose = "2.9.0"
+pagingCommon = "3.3.6"
 retrofit = "2.11.0"
 room = "2.7.1"
 ksp = "2.1.20-2.0.0"
@@ -19,10 +21,21 @@ hilt-compiler = "2.56"
 hilt-navigation-compose = "1.2.0"
 paging = "3.3.6"
 
+junit5 = "5.10.1"
+junit5-plugin = "1.10.0.0"
+junit5-compose = "1.4.0"
+mockk = "1.13.11"
+assertk = "0.28.1"
+turbine = "0.7.0"
+composeUiTestManifest = "1.6.8"
+coroutines-test = "1.8.1"
+junitJupiter = "5.8.1"
 
 [libraries]
+androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
 androidx-foundation = { module = "androidx.compose.foundation:foundation" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "pagingCommon" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilNetworkOkhttp" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilNetworkOkhttp" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
@@ -55,6 +68,17 @@ hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hil
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
 material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 
+junit5-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit5" }
+junit5-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit5" }
+junit5-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit5" }
+junit5-android-test-compose = { module = "de.mannodermaus.junit5:android-test-compose", version.ref = "junit5-compose" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+assertk = { module = "com.willowtreeapps.assertk:assertk", version.ref = "assertk" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines-test" }
+junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
+
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
@@ -63,4 +87,5 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+junit5 = { id = "de.mannodermaus.android-junit5", version.ref = "junit5-plugin" }
 

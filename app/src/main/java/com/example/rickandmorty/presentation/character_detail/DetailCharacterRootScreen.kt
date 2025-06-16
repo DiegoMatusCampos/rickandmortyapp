@@ -5,15 +5,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.rickandmorty.presentation.character_list.CharacterUiState
-import com.example.rickandmorty.presentation.character_list.CharacterViewModel
 import androidx.compose.runtime.getValue
-import androidx.lifecycle.viewmodel.compose.viewModel
+
 
 @ExperimentalMaterial3Api
 @Composable
 fun DetailCharacterRootScreen(
     onNavigateUp: () -> Unit,
+    onClickButton: (List<Int>) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DetailCharacterViewModel = hiltViewModel<DetailCharacterViewModel>()
 ) {
@@ -24,8 +23,12 @@ fun DetailCharacterRootScreen(
         onAction = { action ->
             when(action){
                 DetailCharacterListAction.onNavigateUp -> onNavigateUp()
+                is DetailCharacterListAction.onClickShowEpisodes -> {
+                    onClickButton(action.ids)
+                }
             }
         },
+        events = viewModel.events
 
     )
 

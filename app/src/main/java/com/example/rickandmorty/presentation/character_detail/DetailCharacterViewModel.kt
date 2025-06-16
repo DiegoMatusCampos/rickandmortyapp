@@ -6,14 +6,15 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.example.rickandmorty.domain.repository.CharacterRepository
 import com.example.rickandmorty.domain.util.onError
-import com.example.rickandmorty.domain.util.onSucces
-import com.example.rickandmorty.presentation.character_list.CharacterUiState
+import com.example.rickandmorty.domain.util.onSuccess
 import com.example.rickandmorty.presentation.navigation.CharacterDetail
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -37,17 +38,35 @@ class DetailCharacterViewModel @Inject constructor(
             initialValue = DetailCharacterUiState()
         )
 
+    private val _events = Channel<DetailCharacterEvents>()
+    val events = _events.receiveAsFlow()
+
     private fun loadingCharacter() {
 
         viewModelScope.launch {
-            repository.getCharacters(route.characterId).onSucces { data ->
+
+            _uiState.update {
+                it.copy(
+                    isLoading = true
+                )
+            }
+
+            repository.getCharacters(route.characterId).onSuccess { data ->
                 _uiState.update {
                     it.copy(
-                        selectedCharacter = data
+                        selectedCharacter = data,
+                        isLoading = false
                     )
                 }
-            }.onError {
+            }.onError { error ->
+                _uiState.update {
+                    it.copy(
+                        isLoading =  false,
+                        isError = true
+                    )
+                }
 
+                _events.send(DetailCharacterEvents.Error(error))
             }
         }
 

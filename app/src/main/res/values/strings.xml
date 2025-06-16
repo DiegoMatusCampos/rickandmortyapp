@@ -10,5 +10,6 @@
     <string name="detail">Detalle</string>
     <string name="network_error">No hay conexión a internet</string>
     <string name="retry_button">Reintentar</string>
+    <string name="episode_title">Episodios</string>
 </resources>
 

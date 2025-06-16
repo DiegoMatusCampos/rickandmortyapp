@@ -66,23 +66,7 @@ fun ListCharacterScreen(
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     val snackbarHostState = remember { SnackbarHostState() }
-    val scope = rememberCoroutineScope()
 
-    ObserverAsEvents(SnackbarController.events, snackbarHostState) { event ->
-        scope.launch {
-            snackbarHostState.currentSnackbarData?.dismiss()
-
-           val result =  snackbarHostState.showSnackbar(
-                message = event.message,
-                actionLabel = event.action?.name,
-                duration = SnackbarDuration.Long
-            )
-
-            if( result == SnackbarResult.ActionPerformed){
-                event.action?.action?.invoke()
-            }
-        }
-    }
 
     Scaffold(
         snackbarHost= {
@@ -102,7 +86,6 @@ fun ListCharacterScreen(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
     ) { innerPadding ->
 
-        val refreshState = items.loadState.refresh
         when (items.loadState.refresh) {
             is LoadState.Error -> {
                 Column(

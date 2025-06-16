@@ -23,8 +23,6 @@ fun ListCharacterRootScreen(
 ) {
     val  characters = viewModel.characters.collectAsLazyPagingItems()
 
-
-
     ListCharacterScreen(
             items = characters,
             onAction = { action ->
@@ -33,9 +31,7 @@ fun ListCharacterRootScreen(
                         onClickListItem(action.character)
                     }
                     CharacterListAction.onNavigateUp -> onNavigateUp
-                    is CharacterListAction.onShowSnackbarClick -> {  ->
-                        viewModel.onShowSnackbar(action.message)
-                    }
+
                 }
             },
         )

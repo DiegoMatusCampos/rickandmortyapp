@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.kapt)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.junit5)
 }
 
 android {
@@ -63,6 +64,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     testImplementation(libs.junit)
+    testImplementation(libs.junit.jupiter)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -91,6 +93,23 @@ dependencies {
     implementation(libs.paging.runtime)
     implementation(libs.paging.compose)
 
+
     implementation(libs.kotlinx.serialization.json)
 
+    testImplementation(libs.junit5.api)
+    testImplementation(libs.assertk)
+    testImplementation(libs.turbine)
+    testImplementation(libs.junit5.params)
+    testRuntimeOnly(libs.junit5.engine)
+
+    testImplementation(libs.androidx.paging.common)
+    testImplementation(libs.androidx.core.testing)
+
+    testImplementation(libs.coroutines.test)
+    testImplementation(libs.mockk)
+
+}
+
+tasks.withType<Test>{
+    useJUnitPlatform()
 }
